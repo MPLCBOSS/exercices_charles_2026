@@ -2,75 +2,132 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>L'école de Charles</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Charles</title>
+<link rel="stylesheet" href="style.css">
 <style>
-  * { box-sizing: border-box; }
-  body {
-    margin: 0;
-    font-family: "Trebuchet MS", "Comic Sans MS", Arial, sans-serif;
-    background: linear-gradient(180deg, #ffe6f2 0%, #e6f0ff 100%);
-    color: #5a3e6b;
-    min-height: 100vh;
+  .hero { text-align: center; padding: 20px 0 36px; }
+  .medaille {
+    width: 96px; height: 96px; margin: 0 auto 20px; border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, var(--or-clair), var(--or) 55%, var(--or-fonce));
+    display: grid; place-items: center; font-size: 2.8rem;
+    box-shadow: 0 0 0 6px rgba(212,175,55,0.15), 0 12px 40px rgba(212,175,55,0.4);
+    animation: flotte 3.5s ease-in-out infinite;
   }
-  header { text-align: center; padding: 30px 15px 10px; }
-  header h1 { font-size: 2.4em; margin: 0; color: #e0559c; }
-  header .chat { font-size: 3.2em; }
-  header p { font-size: 1.3em; margin: 8px 0 0; }
-  main { max-width: 900px; margin: 0 auto; padding: 15px; }
-  .bienvenue {
-    background: #fff; border-radius: 25px; padding: 18px; text-align: center;
-    box-shadow: 0 4px 12px rgba(200,120,180,.25); margin-bottom: 25px;
-    font-size: 1.2em; border: 3px dashed #ffb3d9;
+  @keyframes flotte { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+  .hero h1 { font-size: clamp(2.4rem, 7vw, 3.6rem); font-weight: 800; letter-spacing: -1px; }
+  .hero h1 span {
+    background: linear-gradient(135deg, var(--or-clair), var(--or));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
   }
-  .grille {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 18px;
+  .hero p { color: var(--gris); font-size: 1.1rem; margin-top: 8px; }
+
+  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 36px; }
+  .stat { text-align: center; padding: 20px 10px; }
+  .stat .valeur { font-size: 2rem; font-weight: 800; color: var(--or); }
+  .stat .label { font-size: 0.85rem; color: var(--gris); margin-top: 2px; }
+
+  h2.titre-section {
+    font-size: 0.85rem; text-transform: uppercase; letter-spacing: 2px;
+    color: var(--or); margin-bottom: 16px; font-weight: 700;
   }
-  .carte {
-    display: block; text-decoration: none; color: #fff; text-align: center;
-    padding: 28px 15px; border-radius: 28px; font-size: 1.5em; font-weight: bold;
-    box-shadow: 0 6px 0 rgba(0,0,0,.15); transition: transform .1s;
+
+  .grille { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+  .exo {
+    display: block; text-decoration: none; color: var(--blanc);
+    transition: transform .2s, border-color .2s, box-shadow .2s;
   }
-  .carte:active { transform: translateY(4px); box-shadow: 0 2px 0 rgba(0,0,0,.15); }
-  .carte .icone { display: block; font-size: 2.4em; margin-bottom: 6px; }
-  .rose { background: #ff7eb6; }
-  .bleu { background: #6ec6ff; }
-  .jaune { background: #ffc94d; }
-  .vert { background: #7ed9a0; }
-  .violet { background: #b497ff; }
-  .bientot { opacity: .75; }
-  .bientot small { font-weight: normal; font-size: .6em; }
-  footer { text-align: center; padding: 30px 15px; font-size: 1.1em; }
+  .exo:hover { transform: translateY(-4px); border-color: var(--or); box-shadow: 0 14px 36px rgba(212,175,55,0.18); }
+  .exo .icone {
+    width: 52px; height: 52px; border-radius: 14px; margin-bottom: 14px;
+    background: rgba(212,175,55,0.12); border: 1px solid rgba(212,175,55,0.3);
+    display: grid; place-items: center; font-size: 1.6rem;
+  }
+  .exo h3 { font-size: 1.25rem; margin-bottom: 6px; }
+  .exo p { color: var(--gris); font-size: 0.95rem; margin-bottom: 14px; }
+  .exo .meta { display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; color: var(--gris); }
+  .exo .meilleur { color: var(--or); font-weight: 700; }
+
+  .bientot { opacity: 0.45; pointer-events: none; }
+  .tag-bientot {
+    display: inline-block; font-size: 0.75rem; padding: 3px 10px; border-radius: 20px;
+    background: rgba(255,255,255,0.08); color: var(--gris);
+  }
+  footer { text-align: center; color: var(--gris); font-size: 0.85rem; margin-top: 50px; }
+
+  @media (max-width: 600px) { .stat .valeur { font-size: 1.6rem; } }
 </style>
 </head>
 <body>
+<div class="container">
 
-<header>
-  <div class="chat">🐱</div>
-  <h1>L'école de Charles</h1>
-  <p>🤸 Gymnastique du cerveau : on s'entraîne tous les jours ! 🌸</p>
-</header>
+  <div class="topbar apparait">
+    <a href="index.html" class="logo"><div class="logo-badge">🏅</div>Charles</a>
+  </div>
 
-<main>
-  <section class="bienvenue">
-    ✨ Bonjour Charles ! Choisis ta matière et c'est parti ! ✨<br>
-    <small>Dans quelques jours, le premier exercice arrive !</small>
+  <section class="hero apparait">
+    <div class="medaille">🏅</div>
+    <h1>Salut, <span>Charles</span> !</h1>
+    <p>Prêt pour l'entraînement du jour ?</p>
   </section>
 
+  <section class="stats apparait" style="animation-delay:.1s">
+    <div class="card stat"><div class="valeur" id="serie">0</div><div class="label">jours de suite</div></div>
+    <div class="card stat"><div class="valeur" id="tests">0</div><div class="label">tests terminés</div></div>
+    <div class="card stat"><div class="valeur" id="etoiles">0</div><div class="label">étoiles</div></div>
+  </section>
+
+  <h2 class="titre-section apparait" style="animation-delay:.2s">Les entraînements</h2>
   <section class="grille">
-    <a class="carte rose" href="determinants.html"><span class="icone">📚</span>Grammaire<br><small>Les déterminants</small></a>
-    <a class="carte bleu bientot" href="#"><span class="icone">⏰</span>Heures et durées<br><small>(bientôt)</small></a>
-    <a class="carte jaune bientot" href="#"><span class="icone">✏️</span>Conjugaison<br><small>(bientôt)</small></a>
-    <a class="carte vert bientot" href="#"><span class="icone">🔢</span>Calcul<br><small>(bientôt)</small></a>
-    <a class="carte violet bientot" href="#"><span class="icone">🏆</span>Défis mélangés<br><small>(bientôt)</small></a>
+    <a href="determinants.html" class="card exo apparait" style="animation-delay:.25s">
+      <div class="icone">✏️</div>
+      <h3>Les déterminants</h3>
+      <p>Articles, possessifs, démonstratifs : attention aux pièges !</p>
+      <div class="meta"><span>20 questions</span><span class="meilleur" id="meilleur-det"></span></div>
+    </a>
+
+    <div class="card exo bientot apparait" style="animation-delay:.3s">
+      <div class="icone">🕐</div>
+      <h3>Lire l'heure</h3>
+      <p>Horloges et calculs de durées.</p>
+      <div class="meta"><span class="tag-bientot">Bientôt</span></div>
+    </div>
+
+    <div class="card exo bientot apparait" style="animation-delay:.35s">
+      <div class="icone">🎯</div>
+      <h3>Sujet et verbe</h3>
+      <p>Retrouve les fonctions dans la phrase.</p>
+      <div class="meta"><span class="tag-bientot">Bientôt</span></div>
+    </div>
+
+    <div class="card exo bientot apparait" style="animation-delay:.4s">
+      <div class="icone">🔤</div>
+      <h3>Verbes du 2e groupe</h3>
+      <p>Finir, grandir, choisir…</p>
+      <div class="meta"><span class="tag-bientot">Bientôt</span></div>
+    </div>
   </section>
-</main>
 
-<footer>
-  🐾 Allez Charles, un saut, une pirouette et c'est parti ! 🤸‍♂️🐾
-</footer>
+  <footer>Un petit entraînement chaque jour fait les champions 🥇</footer>
+</div>
 
+<script>
+  var data = JSON.parse(localStorage.getItem('charlesData') || '{}');
+  document.getElementById('tests').textContent = data.tests || 0;
+  document.getElementById('etoiles').textContent = data.etoiles || 0;
+
+  var serie = 0;
+  if (data.dernierJour) {
+    var auj = new Date(); auj.setHours(0,0,0,0);
+    var dernier = new Date(data.dernierJour); dernier.setHours(0,0,0,0);
+    var ecart = Math.round((auj - dernier) / 86400000);
+    serie = ecart <= 1 ? (data.serie || 0) : 0;
+  }
+  document.getElementById('serie').textContent = serie;
+
+  if (data.meilleurs && data.meilleurs.determinants !== undefined) {
+    document.getElementById('meilleur-det').textContent = '🏆 ' + data.meilleurs.determinants + '/20';
+  }
+</script>
 </body>
 </html>
