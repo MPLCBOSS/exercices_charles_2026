@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Les déterminants - L'école de Charles</title>
+<style>
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  body {
+    margin: 0;
+    font-family: "Trebuchet MS", "Comic Sans MS", Arial, sans-serif;
+    background: linear-gradient(180deg, #ffe6f2 0%, #e6f0ff 100%);
+    color: #5a3e6b;
+    min-height: 100vh;
+  }
+  .conteneur { max-width: 720px; margin: 0 auto; padding: 14px; }
+  .retour { display: inline-block; color: #e0559c; font-weight: bold; text-decoration: none; padding: 6px 4px; font-size: 1.05em; }
+  h1 { text-align: center; color: #e0559c; margin: 6px 0 4px; font-size: 1.9em; }
+  .sous-titre { text-align: center; margin: 0 0 14px; font-size: 1.1em; }
+  .carte-quiz {
+    background: #fff; border-radius: 26px; padding: 20px;
+    box-shadow: 0 5px 14px rgba(200,120,180,.28); border: 3px dashed #ffb3d9;
+  }
+  .barre-ext { background: #ffe0f0; border-radius: 20px; height: 16px; overflow: hidden; margin-bottom: 8px; }
+  .barre-int { background: linear-gradient(90deg, #ff7eb6, #b497ff); height: 100%; width: 0%; transition: width .3s; border-radius: 20px; }
+  .progression { text-align: center; font-weight: bold; margin-bottom: 12px; font-size: 1.1em; }
+  .question { font-size: 1.4em; font-weight: bold; text-align: center; margin: 8px 0 6px; line-height: 1.35; }
+  .consigne { text-align: center; font-size: 1em; color: #9b6bb0; margin-bottom: 14px; min-height: 1.3em; }
+  .choix { display: flex; flex-direction: column; gap: 11px; }
+  .choix.deux-colonnes { display: grid; grid-template-columns: 1fr 1fr; gap: 11px; }
+  .bouton-choix {
+    font-family: inherit; font-size: 1.35em; font-weight: bold; padding: 16px 10px;
+    border-radius: 20px; border: 3px solid #d9c4ec; background: #f8f1ff; color: #5a3e6b;
+    cursor: pointer; min-height: 62px; transition: transform .08s;
+  }
+  .bouton-choix:active { transform: scale(.97); }
+  .bouton-choix.selectionne { background: #ffd1e8; border-color: #e0559c; color: #a0206a; }
+  .bouton-choix.juste { background: #b8f0c8; border-color: #2f9e57; color: #14532d; }
+  .bouton-choix.faux { background: #ffc4c4; border-color: #d63a3a; color: #7f1d1d; }
+  .bouton-choix.manque { background: #fff; border: 3px dashed #2f9e57; color: #14532d; }
+  .bouton-choix:disabled { cursor: default; }
+  .bouton-action {
+    display: block; width: 100%; margin-top: 18px; font-family: inherit; font-size: 1.35em; font-weight: bold;
+    padding: 16px; border: none; border-radius: 22px; color: #fff; cursor: pointer;
+    background: #ff7eb6; box-shadow: 0 5px 0 #d85a94;
+  }
+  .bouton-action:active { transform: translateY(3px); box-shadow: 0 2px 0 #d85a94; }
+  .bouton-action:disabled { background: #d8c9e0; box-shadow: 0 5px 0 #b9a8c4; cursor: not-allowed; }
+  .bouton-bleu { background: #6ec6ff; box-shadow: 0 5px 0 #3f9fd6; }
+  .bouton-bleu:active { box-shadow: 0 2px 0 #3f9fd6; }
+  .retour-correction { margin-top: 16px; padding: 14px 16px; border-radius: 18px; font-size: 1.1em; line-height: 1.45; }
+  .retour-correction.ok { background: #e3f9e9; border: 2px solid #2f9e57; }
+  .retour-correction.ko { background: #fff0e0; border: 2px solid #f0a23c; }
+  .retour-correction strong.titre { display: block; font-size: 1.2em; margin-bottom: 4px; }
+  .cache { display: none; }
+  .resultat { text-align: center; }
+  .grand-score { font-size: 3.6em; font-weight: bold; color: #e0559c; margin: 6px 0; }
+  .message-final { font-size: 1.3em; margin-bottom: 8px; }
+  .liste-detail { text-align: left; margin-top: 14px; }
+  .ligne-detail { background: #faf5ff; border-left: 8px solid #ccc; border-radius: 12px; padding: 10px 12px; margin-bottom: 10px; font-size: 1.02em; line-height: 1.4; }
+  .ligne-detail.ok { border-left-color: #2f9e57; background: #f0fbf3; }
+  .ligne-detail.ko { border-left-color: #d63a3a; background: #fff5f5; }
+  .ligne-detail .q { font-weight: bold; }
+  .ligne-detail .expl { color: #7a5a8a; font-size: .95em; margin-top: 4px; }
+  @media (max-width: 420px) {
+    .bouton-choix { font-size: 1.2em; }
+    .question { font-size: 1.25em; }
+  }
+</style>
+</head>
+<body>
+<div class="conteneur">
+  <a class="retour" href="index.html">⬅️ Retour à l'accueil</a>
+  <h1>🐱 Les déterminants 🌸</h1>
+  <p class="sous-titre">Un petit jeu de 20 questions !</p>
+
+  <div class="carte-quiz" id="ecran-quiz">
+    <div class="barre-ext"><div class="barre-int" id="barre"></div></div>
+    <div class="progression" id="progression">Question 1 / 20</div>
+    <div class="question" id="question"></div>
+    <div class="consigne" id="consigne"></div>
+    <div class="choix" id="choix"></div>
+    <div class="retour-correction cache" id="retour"></div>
+    <button class="bouton-action" id="btn-valider" disabled>✅ Valider ma réponse</button>
+    <button class="bouton-action bouton-bleu cache" id="btn-suivant">➡️ Question suivante</button>
+  </div>
+
+  <div class="carte-quiz cache resultat" id="ecran-final">
+    <div class="message-final" id="message-final"></div>
+    <div class="grand-score" id="score-final"></div>
+    <button class="bouton-action" id="btn-detail">📋 Voir la correction détaillée</button>
+    <div class="liste-detail cache" id="detail"></div>
+    <button class="bouton-action bouton-bleu" id="btn-recommencer">🔄 Recommencer</button>
+  </div>
+</div>
+
+<script>
+// ============ LES QUESTIONS ============
+// type "unique" = une seule bonne réponse ; "multiple" = plusieurs bonnes réponses
+// "bonnes" = liste des bonnes réponses ; "choix" = toutes les propositions (mélangées automatiquement)
+const TOUTES_LES_QUESTIONS = [
+  // ---- Faciles (1 à 5) ----
+  { type:"unique", q:"À quelle famille appartient « cette » ?", choix:["Article indéfini","Possessif","Démonstratif","Article défini"], bonnes:["Démonstratif"], expl:"« ce, cet, cette, ces » sont des déterminants démonstratifs : ils servent à montrer." },
+  { type:"unique", q:"À quelle famille appartient « un » ?", choix:["Article défini","Article indéfini","Possessif","Démonstratif"], bonnes:["Article indéfini"], expl:"« un, une, des » sont des articles indéfinis." },
+  { type:"unique", q:"À quelle famille appartient « le » ?", choix:["Démonstratif","Possessif","Article indéfini","Article défini"], bonnes:["Article défini"], expl:"« le, la, les, l' » sont des articles définis." },
+  { type:"unique", q:"Quel déterminant est possessif ?", choix:["ces","des","les","ses"], bonnes:["ses"], expl:"« ses » est un possessif (mon, ton, son, ses…). Il montre à qui appartient quelque chose." },
+  { type:"unique", q:"Dans « un petit chien », quel est le déterminant ?", choix:["petit","chien","un","petit chien"], bonnes:["un"], expl:"Le déterminant se place devant le nom. Ici, « un » détermine « chien »." },
+
+  // ---- Intermédiaires (6 à 12) ----
+  { type:"multiple", q:"Trouve tous les articles définis.", consigne:"Plusieurs bonnes réponses !", choix:["des","les","l'","une","la","le"], bonnes:["les","l'","la","le"], expl:"Les articles définis sont : le, la, les, l'. Attention : « des » et « une » sont des articles indéfinis." },
+  { type:"multiple", q:"Trouve tous les déterminants démonstratifs.", consigne:"Plusieurs bonnes réponses !", choix:["cette","sa","ces","cet","le","ce"], bonnes:["cette","ces","cet","ce"], expl:"Les démonstratifs sont : ce, cet, cette, ces. « sa » est un possessif et « le » est un article défini." },
+  { type:"unique", q:"Complète : « ___ arbre est immense ».", consigne:"Choisis un démonstratif.", choix:["Cet","Cette","Ces","Ce"], bonnes:["Cet"], expl:"« arbre » est masculin singulier et commence par une voyelle : on écrit « cet arbre »." },
+  { type:"unique", q:"Trouve l'intrus parmi les possessifs.", choix:["mon","notre","cette","leurs"], bonnes:["cette"], expl:"« cette » est un démonstratif. Les trois autres sont des possessifs." },
+  { type:"unique", q:"Complète : « Nous rangeons ___ cartables. »", consigne:"Choisis un possessif.", choix:["ces","des","nos","les"], bonnes:["nos"], expl:"« nos » est le possessif qui correspond à « nous » (nos cartables = les cartables de nous)." },
+  { type:"multiple", q:"Trouve tous les articles, définis ou indéfinis.", consigne:"Plusieurs bonnes réponses !", choix:["ses","des","l'","cet","une","les"], bonnes:["des","l'","une","les"], expl:"« des, l', une, les » sont des articles. « ses » est un possessif et « cet » est un démonstratif." },
+  { type:"unique", q:"Trouve l'intrus parmi les articles indéfinis.", choix:["des","un","la","une"], bonnes:["la"], expl:"« la » est un article défini. « un, une, des » sont indéfinis." },
+
+  // ---- Pièges et applications (13 à 17) ----
+  { type:"unique", q:"Complète : « Lola caresse ___ chat. » (le chat de Lola)", consigne:"Choisis le possessif.", choix:["ce","son","un","le"], bonnes:["son"], expl:"« son chat » = le chat de Lola. « ce » est un démonstratif, « un » et « le » sont des articles." },
+  { type:"unique", q:"Complète : « Regarde ___ fleurs, elles sont belles ! »", consigne:"Choisis un démonstratif.", choix:["ses","ces","des","les"], bonnes:["ces"], expl:"Pour montrer des fleurs, on utilise le démonstratif « ces ». Attention à ne pas le confondre avec « ses » (possessif)." },
+  { type:"multiple", q:"Trouve tous les déterminants possessifs.", consigne:"Plusieurs bonnes réponses !", choix:["mes","ces","leur","ta","cet","les"], bonnes:["mes","leur","ta"], expl:"« mes, leur, ta » sont des possessifs. « ces » et « cet » sont des démonstratifs, « les » est un article défini." },
+  { type:"unique", q:"Quelle phrase contient un article indéfini ?", choix:["Mon frère joue.","Ces enfants chantent.","Une souris se cache.","Le soleil brille."], bonnes:["Une souris se cache."], expl:"Dans « Une souris se cache », « une » est un article indéfini (on ne dit pas de quelle souris il s'agit)." },
+  { type:"unique", q:"Quelle phrase est écrite correctement ?", choix:["Ces enfants range ses jouets.","Ces enfants rangent ses jouets.","Ses enfants rangent ces jouets.","Ces enfants rangent leurs jouets."], bonnes:["Ces enfants rangent leurs jouets."], expl:"Plusieurs enfants rangent « leurs » jouets (ceux de plusieurs personnes) et le verbe s'accorde : ils « rangent »." },
+
+  // ---- Petits défis (18 à 20) ----
+  { type:"multiple", q:"Dans « Mes deux chats dorment sur ce canapé. », quels mots sont des déterminants ?", consigne:"Plusieurs bonnes réponses !", choix:["Mes","chats","dorment","ce","canapé","deux"], bonnes:["Mes","ce"], expl:"« Mes » (possessif) détermine « chats » et « ce » (démonstratif) détermine « canapé ». « deux » n'est pas dans la leçon des quatre familles." },
+  { type:"unique", q:"« Cet » s'écrit avec un « t » dans quel cas ?", choix:["Devant un nom masculin qui commence par une voyelle","Devant un nom féminin","Devant un nom pluriel","Devant n'importe quel nom"], bonnes:["Devant un nom masculin qui commence par une voyelle"], expl:"On écrit « cet arbre », « cet ours », « cet escargot » : nom masculin commençant par une voyelle (ou un h muet)." },
+  { type:"unique", q:"Quel mot ne peut PAS être un déterminant ?", choix:["notre","mange","cette","une"], bonnes:["mange"], expl:"« mange » est un verbe. Un déterminant se place devant un nom et ne change pas comme un verbe." }
+];
+
+// ============ OUTILS ============
+function melanger(tableau) {
+  const t = tableau.slice();
+  for (let i = t.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [t[i], t[j]] = [t[j], t[i]];
+  }
+  return t;
+}
+function egaux(a, b) {
+  if (a.length !== b.length) return false;
+  const sa = a.slice().sort().join("|"), sb = b.slice().sort().join("|");
+  return sa === sb;
+}
+
+// ============ ÉTAT ============
+let questions = [], indice = 0, score = 0, selection = [], valide = false, historique = [];
+
+const el = id => document.getElementById(id);
+
+function demarrer() {
+  // On garde l'ordre progressif par blocs : on mélange à l'intérieur de chaque bloc de difficulté
+  const blocs = [ [0,5], [5,12], [12,17], [17,20] ];
+  questions = [];
+  blocs.forEach(([a,b]) => {
+    questions = questions.concat(melanger(TOUTES_LES_QUESTIONS.slice(a,b)));
+  });
+  // On mélange aussi les propositions de réponses de chaque question
+  questions = questions.map(q => ({ ...q, choix: melanger(q.choix) }));
+  indice = 0; score = 0; historique = [];
+  el("ecran-quiz").classList.remove("cache");
+  el("ecran-final").classList.add("cache");
+  el("detail").classList.add("cache");
+  afficherQuestion();
+}
+
+function afficherQuestion() {
+  const q = questions[indice];
+  selection = []; valide = false;
+  el("progression").textContent = "Question " + (indice+1) + " / " + questions.length;
+  el("barre").style.width = (indice / questions.length * 100) + "%";
+  el("question").textContent = q.q;
+  el("consigne").textContent = q.type === "multiple"
+    ? (q.consigne || "Plusieurs bonnes réponses !")
+    : (q.consigne || "");
+  const zone = el("choix");
+  zone.innerHTML = "";
+  zone.className = "choix" + (q.choix.length >= 4 && q.choix.every(c => c.length < 14) ? " deux-colonnes" : "");
+  q.choix.forEach(texte => {
+    const b = document.createElement("button");
+    b.className = "bouton-choix";
+    b.textContent = texte;
+    b.addEventListener("click", () => cliquerChoix(b, texte, q));
+    zone.appendChild(b);
+  });
+  el("retour").classList.add("cache");
+  el("btn-valider").classList.remove("cache");
+  el("btn-valider").disabled = true;
+  el("btn-suivant").classList.add("cache");
+}
+
+function cliquerChoix(bouton, texte, q) {
+  if (valide) return;
+  if (q.type === "unique") {
+    selection = [texte];
+    document.querySelectorAll(".bouton-choix").forEach(b => b.classList.remove("selectionne"));
+    bouton.classList.add("selectionne");
+  } else {
+    const pos = selection.indexOf(texte);
+    if (pos >= 0) { selection.splice(pos,1); bouton.classList.remove("selectionne"); }
+    else { selection.push(texte); bouton.classList.add("selectionne"); }
+  }
+  el("btn-valider").disabled = selection.length === 0;
+}
+
+function valider() {
+  if (valide || selection.length === 0) return;
+  valide = true;
+  const q = questions[indice];
+  const reussi = egaux(selection, q.bonnes);
+  if (reussi) score++;
+  historique.push({ q: q.q, bonnes: q.bonnes, donnees: selection.slice(), reussi, expl: q.expl });
+
+  document.querySelectorAll(".bouton-choix").forEach(b => {
+    const t = b.textContent;
+    const estBonne = q.bonnes.includes(t);
+    const estChoisie = selection.includes(t);
+    b.classList.remove("selectionne");
+    if (estBonne && estChoisie) b.classList.add("juste");
+    else if (!estBonne && estChoisie) b.classList.add("faux");
+    else if (estBonne && !estChoisie) b.classList.add("manque");
+    b.disabled = true;
+  });
+
+  const r = el("retour");
+  r.className = "retour-correction " + (reussi ? "ok" : "ko");
+  r.innerHTML = (reussi
+    ? '<strong class="titre">🌟 Bravo, c\'est juste !</strong>'
+    : '<strong class="titre">💡 Pas tout à fait… Bonne réponse : ' + q.bonnes.join(", ") + '</strong>')
+    + q.expl;
+  el("btn-valider").classList.add("cache");
+  el("btn-suivant").classList.remove("cache");
+  el("btn-suivant").textContent = (indice === questions.length - 1) ? "🏁 Voir mon score" : "➡️ Question suivante";
+}
+
+function suivant() {
+  indice++;
+  if (indice >= questions.length) { afficherFinal(); }
+  else { afficherQuestion(); window.scrollTo({top:0, behavior:"smooth"}); }
+}
+
+function afficherFinal() {
+  el("barre").style.width = "100%";
+  el("ecran-quiz").classList.add("cache");
+  el("ecran-final").classList.remove("cache");
+  el("score-final").textContent = score + " / " + questions.length;
+  let msg;
+  if (score >= 18) msg = "🏆 Extraordinaire, tu es un champion des déterminants !";
+  else if (score >= 14) msg = "🌟 Très bien joué, continue comme ça !";
+  else if (score >= 10) msg = "😸 Bon travail ! Encore un petit entraînement et ce sera parfait.";
+  else msg = "🐾 Courage ! Relis la leçon et recommence, tu vas y arriver !";
+  el("message-final").textContent = msg;
+  window.scrollTo({top:0, behavior:"smooth"});
+}
+
+function afficherDetail() {
+  const d = el("detail");
+  d.innerHTML = "";
+  historique.forEach((h, i) => {
+    const div = document.createElement("div");
+    div.className = "ligne-detail " + (h.reussi ? "ok" : "ko");
+    div.innerHTML = '<div class="q">' + (h.reussi ? "✅" : "❌") + " " + (i+1) + ". " + h.q + "</div>"
+      + (h.reussi ? "" : '<div>Ta réponse : ' + h.donnees.join(", ") + '</div>')
+      + '<div>Bonne réponse : ' + h.bonnes.join(", ") + '</div>'
+      + '<div class="expl">' + h.expl + '</div>';
+    d.appendChild(div);
+  });
+  d.classList.toggle("cache");
+}
+
+el("btn-valider").addEventListener("click", valider);
+el("btn-suivant").addEventListener("click", suivant);
+el("btn-detail").addEventListener("click", afficherDetail);
+el("btn-recommencer").addEventListener("click", demarrer);
+
+demarrer();
+</script>
+</body>
+</html>
