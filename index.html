@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>L'école de Charles</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Trebuchet MS", "Comic Sans MS", Arial, sans-serif;
+    background: linear-gradient(180deg, #ffe6f2 0%, #e6f0ff 100%);
+    color: #5a3e6b;
+    min-height: 100vh;
+  }
+  header { text-align: center; padding: 30px 15px 10px; }
+  header h1 { font-size: 2.4em; margin: 0; color: #e0559c; }
+  header .chat { font-size: 3.2em; }
+  header p { font-size: 1.3em; margin: 8px 0 0; }
+  main { max-width: 900px; margin: 0 auto; padding: 15px; }
+  .bienvenue {
+    background: #fff; border-radius: 25px; padding: 18px; text-align: center;
+    box-shadow: 0 4px 12px rgba(200,120,180,.25); margin-bottom: 25px;
+    font-size: 1.2em; border: 3px dashed #ffb3d9;
+  }
+  .grille {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 18px;
+  }
+  .carte {
+    display: block; text-decoration: none; color: #fff; text-align: center;
+    padding: 28px 15px; border-radius: 28px; font-size: 1.5em; font-weight: bold;
+    box-shadow: 0 6px 0 rgba(0,0,0,.15); transition: transform .1s;
+  }
+  .carte:active { transform: translateY(4px); box-shadow: 0 2px 0 rgba(0,0,0,.15); }
+  .carte .icone { display: block; font-size: 2.4em; margin-bottom: 6px; }
+  .rose { background: #ff7eb6; }
+  .bleu { background: #6ec6ff; }
+  .jaune { background: #ffc94d; }
+  .vert { background: #7ed9a0; }
+  .violet { background: #b497ff; }
+  .bientot { opacity: .75; }
+  .bientot small { font-weight: normal; font-size: .6em; }
+  footer { text-align: center; padding: 30px 15px; font-size: 1.1em; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="chat">🐱</div>
+  <h1>L'école de Charles</h1>
+  <p>🤸 Gymnastique du cerveau : on s'entraîne tous les jours ! 🌸</p>
+</header>
+
+<main>
+  <section class="bienvenue">
+    ✨ Bonjour Charles ! Choisis ta matière et c'est parti ! ✨<br>
+    <small>Dans quelques jours, le premier exercice arrive !</small>
+  </section>
+
+  <section class="grille">
+    <a class="carte rose bientot" href="#"><span class="icone">📚</span>Grammaire<br><small>(bientôt)</small></a>
+    <a class="carte bleu bientot" href="#"><span class="icone">⏰</span>Heures et durées<br><small>(bientôt)</small></a>
+    <a class="carte jaune bientot" href="#"><span class="icone">✏️</span>Conjugaison<br><small>(bientôt)</small></a>
+    <a class="carte vert bientot" href="#"><span class="icone">🔢</span>Calcul<br><small>(bientôt)</small></a>
+    <a class="carte violet bientot" href="#"><span class="icone">🏆</span>Défis mélangés<br><small>(bientôt)</small></a>
+  </section>
+</main>
+
+<footer>
+  🐾 Allez Charles, un saut, une pirouette et c'est parti ! 🤸‍♂️🐾
+</footer>
+
+</body>
+</html>
