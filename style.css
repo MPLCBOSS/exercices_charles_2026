@@ -1,0 +1,95 @@
+:root {
+  --noir: #0a0a0c;
+  --noir-2: #131316;
+  --noir-3: #1c1c21;
+  --or: #d4af37;
+  --or-clair: #f5d76e;
+  --or-fonce: #9c7c1f;
+  --blanc: #f5f5f0;
+  --gris: #8c8c94;
+  --vert: #3ecf8e;
+  --rouge: #ff5c5c;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+  background: var(--noir);
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(212,175,55,0.18), transparent),
+    radial-gradient(ellipse 60% 40% at 100% 100%, rgba(212,175,55,0.08), transparent);
+  background-attachment: fixed;
+  color: var(--blanc);
+  min-height: 100vh;
+  line-height: 1.5;
+}
+
+.container { max-width: 960px; margin: 0 auto; padding: 24px 20px 60px; }
+
+/* ---------- En-tête ---------- */
+.topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 0 28px;
+}
+.logo {
+  display: flex; align-items: center; gap: 12px;
+  text-decoration: none; color: var(--blanc);
+  font-weight: 800; font-size: 1.4rem; letter-spacing: 0.5px;
+}
+.logo-badge {
+  width: 40px; height: 40px; border-radius: 12px;
+  background: linear-gradient(135deg, var(--or-clair), var(--or-fonce));
+  display: grid; place-items: center; font-size: 1.3rem; color: var(--noir);
+  box-shadow: 0 4px 18px rgba(212,175,55,0.35);
+}
+.btn-retour {
+  text-decoration: none; color: var(--gris); font-size: 0.95rem;
+  padding: 10px 16px; border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.1);
+  transition: all .2s;
+}
+.btn-retour:hover { color: var(--or); border-color: var(--or); }
+
+/* ---------- Cartes ---------- */
+.card {
+  background: linear-gradient(145deg, rgba(255,255,255,0.05), rgba(255,255,255,0.015));
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 22px;
+  padding: 24px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* ---------- Boutons ---------- */
+.btn {
+  display: inline-block; width: 100%;
+  padding: 18px 24px; border: none; border-radius: 16px;
+  font-size: 1.1rem; font-weight: 700; cursor: pointer;
+  background: linear-gradient(135deg, var(--or-clair), var(--or));
+  color: var(--noir);
+  box-shadow: 0 8px 24px rgba(212,175,55,0.3);
+  transition: transform .15s, box-shadow .15s, opacity .2s;
+  font-family: inherit;
+}
+.btn:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(212,175,55,0.45); }
+.btn:active { transform: scale(0.98); }
+.btn:disabled { opacity: 0.35; cursor: not-allowed; transform: none; box-shadow: none; }
+.btn-secondaire {
+  background: transparent; color: var(--or);
+  border: 1.5px solid var(--or); box-shadow: none;
+}
+.btn-secondaire:hover { background: rgba(212,175,55,0.1); box-shadow: none; }
+
+/* ---------- Animations ---------- */
+@keyframes apparition {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.apparait { animation: apparition .5s ease both; }
+
+@media (max-width: 600px) {
+  .container { padding: 16px 14px 48px; }
+}
