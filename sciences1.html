@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sciences : L'alimentation</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  .lecon-bloc { background: var(--noir-2); border: 1px solid var(--noir-3); border-radius: 16px; padding: 20px; margin-bottom: 16px; }
+  .lecon-bloc h3 { color: var(--or); margin-bottom: 10px; }
+  .lecon-bloc ul { padding-left: 20px; }
+  .lecon-bloc li { margin: 6px 0; }
+  .revoir { color: var(--or-clair); font-size: 0.95em; }
+  .a-revoir { background: var(--noir-2); border: 1px solid var(--or-fonce); border-radius: 16px; padding: 18px; margin: 20px 0; text-align: left; }
+  .a-revoir h3 { color: var(--or); margin-bottom: 10px; }
+  .a-revoir ul { padding-left: 20px; }
+  .parfait { color: var(--vert); font-weight: 700; text-align: center; }
+  .cache { display: none !important; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="topbar"><a class="logo" href="index.html">← Charles</a></div>
+
+  <div id="lecon">
+    <h1>Sciences : l'alimentation</h1>
+    <p style="margin:10px 0 20px;color:var(--gris)">Lis bien ta leçon, puis fais le test. Voici les 4 choses à savoir :</p>
+
+    <div class="lecon-bloc"><h3>1. Les 3 origines des aliments</h3>
+      <ul><li><b>Animale</b> : viande, poisson, œufs, lait, yaourts</li>
+      <li><b>Végétale</b> : fruits, légumes, céréales</li>
+      <li><b>Minérale</b> : l'eau, le sel</li></ul></div>
+
+    <div class="lecon-bloc"><h3>2. Les aliments transformés</h3>
+      <p>Un aliment est <b>transformé</b> quand l'homme l'a changé : confiture (à partir de fruits), beurre (à partir du lait), pain, fromage, thon en conserve, lait de noisette.<br>Un aliment <b>non transformé</b> est tel qu'on le trouve : œuf, carotte, thon entier, viande de bœuf, jambon de dinde.</p></div>
+
+    <div class="lecon-bloc"><h3>3. Les 3 rôles des aliments</h3>
+      <ul><li><b>Bâtisseurs</b> (pour grandir) : viandes, poissons, œufs, produits laitiers</li>
+      <li><b>Énergétiques</b> : féculents, matières grasses, produits sucrés</li>
+      <li><b>Protecteurs</b> : fruits et légumes</li></ul>
+      <p style="margin-top:8px">Et l'eau est indispensable à la vie.</p></div>
+
+    <div class="lecon-bloc"><h3>4. Les 5 organes de l'appareil digestif</h3>
+      <p>Dans l'ordre : <b>la bouche, l'œsophage, l'estomac, l'intestin grêle, le gros intestin</b>.</p></div>
+
+    <button class="btn" id="btnCommencer" style="margin-top:10px">J'ai lu ma leçon, je commence !</button>
+  </div>
+
+  <div id="quiz" class="cache">
+    <div class="progress"><div class="progress-bar" id="barre"></div></div>
+    <p id="compteur" style="color:var(--gris);margin:8px 0"></p>
+
+    <div id="jeu">
+      <h2 id="question" style="margin:10px 0"></h2>
+      <p id="consigne" style="color:var(--or);margin-bottom:14px"></p>
+      <div id="options"></div>
+      <div id="explication" class="explication cache"></div>
+      <button class="btn" id="btnValider" disabled>Valider ma réponse</button>
+      <button class="btn cache" id="btnSuivant">Question suivante</button>
+    </div>
+
+    <div id="fin" class="cache" style="text-align:center">
+      <div id="medaille" style="font-size:4rem"></div>
+      <h2 id="score" style="font-size:2.4rem;color:var(--or)"></h2>
+      <p id="message" style="margin:8px 0 14px"></p>
+      <div id="aRevoir" class="a-revoir"></div>
+      <button class="btn" id="btnRecommencer">Recommencer</button>
+      <a class="btn" href="index.html" style="display:block;margin-top:10px;text-align:center;text-decoration:none">Retour à l'accueil</a>
+    </div>
+  </div>
+</div>
+
+<script src="sciences1-data.js"></script>
+<script>
+document.getElementById('btnCommencer').onclick = function () {
+  document.getElementById('lecon').classList.add('cache');
+  document.getElementById('quiz').classList.remove('cache');
+  var s = document.createElement('script');
+  s.src = 'quiz.js';
+  document.body.appendChild(s);
+};
+</script>
+</body>
+</html>
