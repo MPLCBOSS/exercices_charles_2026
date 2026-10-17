@@ -2,132 +2,65 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Charles</title>
 <link rel="stylesheet" href="style.css">
 <style>
-  .hero { text-align: center; padding: 20px 0 36px; }
-  .medaille {
-    width: 96px; height: 96px; margin: 0 auto 20px; border-radius: 50%;
-    background: radial-gradient(circle at 30% 30%, var(--or-clair), var(--or) 55%, var(--or-fonce));
-    display: grid; place-items: center; font-size: 2.8rem;
-    box-shadow: 0 0 0 6px rgba(212,175,55,0.15), 0 12px 40px rgba(212,175,55,0.4);
-    animation: flotte 3.5s ease-in-out infinite;
-  }
-  @keyframes flotte { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
-  .hero h1 { font-size: clamp(2.4rem, 7vw, 3.6rem); font-weight: 800; letter-spacing: -1px; }
-  .hero h1 span {
-    background: linear-gradient(135deg, var(--or-clair), var(--or));
-    -webkit-background-clip: text; background-clip: text; color: transparent;
-  }
-  .hero p { color: var(--gris); font-size: 1.1rem; margin-top: 8px; }
-
-  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 36px; }
-  .stat { text-align: center; padding: 20px 10px; }
-  .stat .valeur { font-size: 2rem; font-weight: 800; color: var(--or); }
-  .stat .label { font-size: 0.85rem; color: var(--gris); margin-top: 2px; }
-
-  h2.titre-section {
-    font-size: 0.85rem; text-transform: uppercase; letter-spacing: 2px;
-    color: var(--or); margin-bottom: 16px; font-weight: 700;
-  }
-
-  .grille { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
-  .exo {
-    display: block; text-decoration: none; color: var(--blanc);
-    transition: transform .2s, border-color .2s, box-shadow .2s;
-  }
-  .exo:hover { transform: translateY(-4px); border-color: var(--or); box-shadow: 0 14px 36px rgba(212,175,55,0.18); }
-  .exo .icone {
-    width: 52px; height: 52px; border-radius: 14px; margin-bottom: 14px;
-    background: rgba(212,175,55,0.12); border: 1px solid rgba(212,175,55,0.3);
-    display: grid; place-items: center; font-size: 1.6rem;
-  }
-  .exo h3 { font-size: 1.25rem; margin-bottom: 6px; }
-  .exo p { color: var(--gris); font-size: 0.95rem; margin-bottom: 14px; }
-  .exo .meta { display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; color: var(--gris); }
-  .exo .meilleur { color: var(--or); font-weight: 700; }
-
-  .bientot { opacity: 0.45; pointer-events: none; }
-  .tag-bientot {
-    display: inline-block; font-size: 0.75rem; padding: 3px 10px; border-radius: 20px;
-    background: rgba(255,255,255,0.08); color: var(--gris);
-  }
-  footer { text-align: center; color: var(--gris); font-size: 0.85rem; margin-top: 50px; }
-
-  @media (max-width: 600px) { .stat .valeur { font-size: 1.6rem; } }
+  .titre-accueil { font-size: 3rem; text-align: center; color: var(--or); letter-spacing: 4px; margin: 24px 0 4px; }
+  .sous-titre { text-align: center; color: var(--gris); margin-bottom: 28px; }
+  .section-titre { color: var(--blanc); font-size: 1.2rem; margin: 26px 0 12px; border-left: 4px solid var(--or); padding-left: 10px; }
+  .grille { display: grid; grid-template-columns: 1fr; gap: 14px; }
+  @media (min-width: 640px) { .grille { grid-template-columns: 1fr 1fr; } }
+  .carte-exo { display: block; background: var(--noir-2); border: 1px solid var(--or-fonce); border-radius: 18px; padding: 20px; text-decoration: none; color: var(--blanc); transition: transform 0.15s, border-color 0.15s; }
+  .carte-exo:active, .carte-exo:hover { transform: translateY(-3px); border-color: var(--or); }
+  .carte-exo .icone { font-size: 2rem; }
+  .carte-exo h3 { color: var(--or); margin: 8px 0 4px; }
+  .carte-exo p { color: var(--gris); font-size: 0.95rem; }
+  .stats { display: flex; gap: 10px; justify-content: center; margin-bottom: 10px; }
+  .stat { flex: 1; background: var(--noir-2); border: 1px solid var(--noir-3); border-radius: 14px; padding: 12px; text-align: center; }
+  .stat .nb { font-size: 1.6rem; color: var(--or); font-weight: 700; }
+  .stat .lib { font-size: 0.8rem; color: var(--gris); }
 </style>
 </head>
 <body>
 <div class="container">
 
-  <div class="topbar apparait">
-    <a href="index.html" class="logo"><div class="logo-badge">🏅</div>Charles</a>
+  <h1 class="titre-accueil">CHARLES</h1>
+  <p class="sous-titre">Mes exercices du jour</p>
+
+  <div class="stats">
+    <div class="stat"><div class="nb" id="statSerie">0</div><div class="lib">jours de suite</div></div>
+    <div class="stat"><div class="nb" id="statTests">0</div><div class="lib">tests terminés</div></div>
+    <div class="stat"><div class="nb" id="statEtoiles">0</div><div class="lib">étoiles</div></div>
   </div>
 
-  <section class="hero apparait">
-    <div class="medaille">🏅</div>
-    <h1>Salut, <span>Charles</span> !</h1>
-    <p>Prêt pour l'entraînement du jour ?</p>
-  </section>
-
-  <section class="stats apparait" style="animation-delay:.1s">
-    <div class="card stat"><div class="valeur" id="serie">0</div><div class="label">jours de suite</div></div>
-    <div class="card stat"><div class="valeur" id="tests">0</div><div class="label">tests terminés</div></div>
-    <div class="card stat"><div class="valeur" id="etoiles">0</div><div class="label">étoiles</div></div>
-  </section>
-
-  <h2 class="titre-section apparait" style="animation-delay:.2s">Les entraînements</h2>
-  <section class="grille">
-    <a href="determinants.html" class="card exo apparait" style="animation-delay:.25s">
-      <div class="icone">✏️</div>
-      <h3>Les déterminants</h3>
-      <p>Articles, possessifs, démonstratifs : attention aux pièges !</p>
-      <div class="meta"><span>20 questions</span><span class="meilleur" id="meilleur-det"></span></div>
+  <h2 class="section-titre">Devoirs</h2>
+  <div class="grille">
+    <a class="carte-exo" href="sciences1.html">
+      <div class="icone">🔬</div>
+      <h3>Sciences : l'alimentation</h3>
+      <p>Prépare ton évaluation : origine, rôles des aliments et digestion.</p>
     </a>
+  </div>
 
-    <div class="card exo bientot apparait" style="animation-delay:.3s">
-      <div class="icone">🕐</div>
-      <h3>Lire l'heure</h3>
-      <p>Horloges et calculs de durées.</p>
-      <div class="meta"><span class="tag-bientot">Bientôt</span></div>
-    </div>
+  <h2 class="section-titre">Exercices</h2>
+  <div class="grille">
+    <a class="carte-exo" href="determinants.html">
+      <div class="icone">✏️</div>
+      <h3>Grammaire : les déterminants</h3>
+      <p>Test de 20 questions avec des pièges.</p>
+    </a>
+  </div>
 
-    <div class="card exo bientot apparait" style="animation-delay:.35s">
-      <div class="icone">🎯</div>
-      <h3>Sujet et verbe</h3>
-      <p>Retrouve les fonctions dans la phrase.</p>
-      <div class="meta"><span class="tag-bientot">Bientôt</span></div>
-    </div>
-
-    <div class="card exo bientot apparait" style="animation-delay:.4s">
-      <div class="icone">🔤</div>
-      <h3>Verbes du 2e groupe</h3>
-      <p>Finir, grandir, choisir…</p>
-      <div class="meta"><span class="tag-bientot">Bientôt</span></div>
-    </div>
-  </section>
-
-  <footer>Un petit entraînement chaque jour fait les champions 🥇</footer>
 </div>
 
 <script>
-  var data = JSON.parse(localStorage.getItem('charlesData') || '{}');
-  document.getElementById('tests').textContent = data.tests || 0;
-  document.getElementById('etoiles').textContent = data.etoiles || 0;
-
-  var serie = 0;
-  if (data.dernierJour) {
-    var auj = new Date(); auj.setHours(0,0,0,0);
-    var dernier = new Date(data.dernierJour); dernier.setHours(0,0,0,0);
-    var ecart = Math.round((auj - dernier) / 86400000);
-    serie = ecart <= 1 ? (data.serie || 0) : 0;
-  }
-  document.getElementById('serie').textContent = serie;
-
-  if (data.meilleurs && data.meilleurs.determinants !== undefined) {
-    document.getElementById('meilleur-det').textContent = '🏆 ' + data.meilleurs.determinants + '/20';
-  }
+  try {
+    var s = JSON.parse(localStorage.getItem('charles_stats')) || {};
+    document.getElementById('statSerie').textContent = s.serie || 0;
+    document.getElementById('statTests').textContent = s.tests || 0;
+    document.getElementById('statEtoiles').textContent = s.etoiles || 0;
+  } catch (e) {}
 </script>
 </body>
 </html>
